@@ -273,7 +273,9 @@ jobs:
 
     - name: Build project and unit tests
       run: |
-        cmake --build build --parallel 128
+        # GCC 11 Release builds retain debug symbols; large TUs exceed 5 GiB.
+        # Bound all jobs, including custom commands, on the 16 GiB runner.
+        cmake --build build --parallel 2
         sudo -E cmake --install build
       shell: bash
 
